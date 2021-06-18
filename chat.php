@@ -12,7 +12,7 @@
 		
 		
 		<div class="jumbotron">
-			<h2>Bunq Chat</h2>
+			<h2>HomSpace Chat</h2>
 			
 			<div id="status">
 			</div>

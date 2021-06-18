@@ -7,6 +7,7 @@ header("Pragma: no-cache" );
 
 // open database
 $file_db = new PDO('sqlite:./chatdb') or die("cannot open database");
+$json = array();
 
 if ($file_db) {
 	
