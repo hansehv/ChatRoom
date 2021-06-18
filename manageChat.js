@@ -6,6 +6,7 @@ var lastReceivedMessage = 0;
 var timer;
 // frequency is the refresh poll value expressed in ms
 var frequency = 2000;
+timer = setInterval("getUnreadMessages();", frequency);
 
 
 // get the browser dependent XMLHttpRequest object
@@ -43,7 +44,6 @@ function getUnreadMessages() {
 // receive messages sent from server and print them in chat
 function receiveMessages() {
 	// refresh chat in timer seconds
-	timer = setInterval("getUnreadMessages();", frequency);
 	if ( receiveReq.readyState == 4 && receiveReq.status == 200) {
 		// get the chat div reference
 		var chat_div = document.getElementById("div_chat");
@@ -55,7 +55,7 @@ function receiveMessages() {
 		for(i=0; i < response.length; i++) {
 			// print sender name, time and message
 			chat_div.innerHTML += '<font class="username_font">' + response[i].sender + ' </font>';
-			chat_div.innerHTML += '<font class="time_font">' + response[i].time + ' </font><br>';
+			chat_div.innerHTML += '<font class="time_font">' + response[i].time + ' UTC</font><br>';
 			chat_div.innerHTML += '<font class="message_font">' + response[i].message + '</font><br>';
 			
 			// autoscroll to the new message
@@ -80,7 +80,7 @@ function sendMessage() {
 	        
 	        // Fill param: pass sender_id, sender_name, message
 			var param = "sender_name=" + document.getElementById("user_name").value;
-			param += "&message=" + document.getElementById("message").value;
+			param += "&message=" +  escapeHtml( document.getElementById("message").value );
 		
 	        // Open and send request
 	        sendReq.open( "POST", 'chatServer.php', true );
@@ -92,13 +92,24 @@ function sendMessage() {
         }
     }
 }
-
+function escapeHtml(text) {
+	var map = {
+		'&': ' plus ',
+		'+': ' plus ',
+		'<': '< ',
+		'>': ' >',
+		'"': '`'
+	};
+  
+  return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
 
 
 function afterSend() {
     if( sendReq.readyState==4 && sendReq.status == 200) {
     	clearInterval(timer);
         getUnreadMessages();
+		timer = setInterval("getUnreadMessages();", frequency);
     }
 }
 

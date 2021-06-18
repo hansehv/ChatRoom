@@ -1,5 +1,7 @@
 <?php session_start(); 
 	
-	$_SESSION["username"] = $_POST['username'];
+	$orig = array("'", '"', "<", ">", "&" , "+");
+	$repl = array("`", "`", "< ", " >", " plus " , " plus ");
+	$_SESSION["username"] = str_replace( $orig,$repl, $_POST['username'] );
 	header("location: ./chat.php");
 ?> 
