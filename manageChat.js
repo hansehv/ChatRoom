@@ -53,18 +53,19 @@ function receiveMessages() {
 		
 		// for every message
 		for(i=0; i < response.length; i++) {
+			var message = response[i].message;
+			if ( message.charAt(0) == '!' ) {
+				message = '<b>' + response[i].message.substr(1) + '</b>';
+			}
 			// print sender name, time and message
-			chat_div.innerHTML += '<font class="username_font">' + response[i].sender + ' </font>';
-			chat_div.innerHTML += '<font class="time_font">' + response[i].time + ' UTC</font><br>';
-			chat_div.innerHTML += '<font class="message_font">' + response[i].message + '</font><br>';
-			
+			// dirty coding: would be better looking on three lines, but this gives faster loading.
+			chat_div.innerHTML += '<font class="username_font">' + response[i].sender + ' </font>' + '<font class="time_font">' + response[i].time + ' UTC</font><br>' + '<font class="message_font" COLOR="' + response[i].favcolor + '">' + message + '</font><br>';
+
 			// autoscroll to the new message
 			chat_div.scrollTop = chat_div.scrollHeight;
-			
 			// update lastReceivedMessage
 			lastReceivedMessage = response[i].message_id;
 		}
-		
 	}
 }
 
@@ -79,8 +80,8 @@ function sendMessage() {
 	        sendReq.onreadystatechange = afterSend;
 	        
 	        // Fill param: pass sender_id, sender_name, message
-			var param = "sender_name=" + document.getElementById("user_name").value;
-			param += "&message=" +  escapeHtml( document.getElementById("message").value );
+			var param = "sender_name=" + encodeURIComponent( document.getElementById("user_name").value );
+			param += "&message=" + encodeURIComponent( escapeHtml( document.getElementById("message").value ) );
 		
 	        // Open and send request
 	        sendReq.open( "POST", 'chatServer.php', true );
@@ -94,14 +95,10 @@ function sendMessage() {
 }
 function escapeHtml(text) {
 	var map = {
-		'&': ' plus ',
-		'+': ' plus ',
-		'<': '< ',
-		'>': ' >',
-		'"': '`'
+		'"': '&quot;'
 	};
   
-  return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+  return text.replace(/["]/g, function(m) { return map[m]; });
 }
 
 
