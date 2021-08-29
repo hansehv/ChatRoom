@@ -1,22 +1,36 @@
-.jumbotron {
-    width: 50%;
-	margin: 0 auto;
+body {
+	background-color: 336699;
+	color: #ffffcc;
 }
 
+a:link,a:active,a:visited {
+	color: #ffffcc;
+	font-weight: bold;
+	text-decoration: none;
+}
+a:hover	{
+	text-decoration:underline;
+}
 
 .chat {
-	height: 300px; 
-	width: 500px; 
+	width: calc(100vw - 50px);
+	height: calc(100% - 120px);
 	background-color: #edeef1; 
 	border: 1px solid #555555;
-	overflow: auto
+	overflow: auto;
+	margin: 3;
+}
+
+.message {
+	width: calc(100vw - 100px);
+	height: 30px;
 }
 
 .username_font {
 	margin-left: 7px;
 	font-size: 13px;
 	color: #4a69a0;
-	text-transform: uppercase;
+	/*text-transform: uppercase;*/
 }
 
 .time_font {
@@ -28,5 +42,4 @@
 .message_font {
 	margin-left: 20px;
 	font-size: 15px;
-	color: #000000;
 }
